@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Set SRN</title>
+        <script>
+            function set_srn(form) {
+                document.cookie = "srn=" + escape(form.srnbox.value) + ";path=/;SameSite=Lax;expires=" + (new Date((new Date()).getTime() + 31104000000)).toGMTString();
+                var hash = (new URL(window.location.href)).searchParams.get("hash");
+                if (hash) {
+                    location.replace("mark_attendance?hash=" + (new URL(window.location.href)).searchParams.get("hash"));
+                }
+                return false;
+            }
+        </script>
+    </head>
+    <body>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <b>{{ message }}</b>
+                    <br>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        Enter your SRN:
+        <form onsubmit="return set_srn(this);">
+            <input type="text" id="srnbox" autofocus>
+            <input type="submit" value="Enter SRN" id="submit">
+        </form>
+    </body>
+</html>
